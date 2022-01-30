@@ -50,7 +50,7 @@ public class Translator {
         return sb.toString();
     }
 
-    public static int toDecimals(String input) {
+    public int toDecimals(String input) {
         String romanNumeral = input.toUpperCase();
         int result = 0;
 
