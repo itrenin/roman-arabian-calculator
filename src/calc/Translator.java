@@ -1,31 +1,77 @@
 package calc;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Translator {
 
-    static String[] roman = {"O", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII",
-            "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII",
-            "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "XXXIX",
-            "XL", "XLI", "XLII", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L", "LI", "LII", "LIII",
-            "LIV", "LV", "LVI", "LVII", "LVIII", "LIX", "LX", "LXI", "LXII", "LXIII", "LXIV", "LXV", "LXVI", "LXVII",
-            "LXVIII", "LXIX", "LXX", "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX",
-            "LXXX", "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "XC",
-            "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"
-    };
-    public String toRoman (int a) throws Exception {
-        if (a < 0){
-            throw new Exception("В римской системе исчисления нет отрицательных чисел");
+    enum RomanNumeral {
+        I(1), IV(4), V(5), IX(9), X(10),
+                XL(40), L(50), XC(90), C(100);
+
+        private int value;
+
+        RomanNumeral(int value) {
+            this.value = value;
         }
-        return roman[a];
+
+        public int getValue() {
+            return value;
+        }
+
+        public static List<RomanNumeral> getReverseSortedValues() {
+            return Arrays.stream(values())
+                    .sorted(Comparator.comparing((RomanNumeral e) -> e.value).reversed())
+                    .collect(Collectors.toList());
+        }
     }
-    public int toDecimals (String s){
-        int result = -1;
-        for ( int i = 0 ; i < roman.length; i++) {
-            if (s.toUpperCase().equals(roman[i])){
-                result = i;
-            };
+    public String toRoman(int number) {
+        if (number <= 0) {
+            throw new Error("в римском счислении нет нуля и отрицательных чисел.");
         }
-        if (result == -1){
-            throw new Error("Значение выходит за границы условий счета. Проверьте значения операндов");
+
+        List<RomanNumeral> romanNumerals = RomanNumeral.getReverseSortedValues();
+
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+
+        while ((number > 0) && (i < romanNumerals.size())) {
+            RomanNumeral currentSymbol = romanNumerals.get(i);
+            if (currentSymbol.getValue() <= number) {
+                sb.append(currentSymbol.name());
+                number -= currentSymbol.getValue();
+            } else {
+                i++;
+            }
         }
+
+        return sb.toString();
+    }
+
+    public static int toDecimals(String input) {
+        String romanNumeral = input.toUpperCase();
+        int result = 0;
+
+        List<RomanNumeral> romanNumerals = RomanNumeral.getReverseSortedValues();
+
+        int i = 0;
+
+        while ((romanNumeral.length() > 0) && (i < romanNumerals.size())) {
+            RomanNumeral symbol = romanNumerals.get(i);
+            if (romanNumeral.startsWith(symbol.name())) {
+                result += symbol.getValue();
+                romanNumeral = romanNumeral.substring(symbol.name().length());
+            } else {
+                i++;
+            }
+        }
+
+        if (romanNumeral.length() > 0) {
+            throw new Error(input + " не моет быть преобразовано в арабское число");
+        }
+
         return result;
     }
 }
