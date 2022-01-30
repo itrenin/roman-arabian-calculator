@@ -9,10 +9,13 @@ import java.util.Scanner;
 
 public class App {
     static Scanner in = new Scanner(System.in);
-    static Map <String, String> state = new HashMap<>();
     static String argument1;
     static String argument2;
+    static String operator;
     static int result = 0;
+    static String total = "";
+    static boolean isRoman = false;
+
 
     public static void main(String[] args) throws Exception {
 
@@ -27,21 +30,11 @@ public class App {
 
         Parser sourceString = new Parser(str);
 
-        // для тестов
-        /*
-        System.out.println("first arg is: " + sourceString.getFirstArg());
-        System.out.println("second arg is: " + sourceString.getSecondArg());
-        System.out.println("operator is: " + sourceString.getOperator());
-         */
-
-        state.put("argument1", sourceString.getFirstArg());
-        state.put("argument2", sourceString.getSecondArg());
-        state.put("operator", sourceString.getOperator());
+        argument1 = sourceString.getFirstArg();
+        argument2 = sourceString.getSecondArg();
+        operator = sourceString.getOperator();
 
         Validator validator = new Validator();
-
-        argument1 = state.get("argument1");
-        argument2 = state.get("argument2");
 
         Translator translator = new Translator();
 
@@ -51,24 +44,25 @@ public class App {
                 // тут преобразование в десятичные
                 argument1 = String.valueOf(translator.toDecimals(argument1));
                 argument2 = String.valueOf(translator.toDecimals(argument2));
-                state.put("isRoman", "true");
+                isRoman = true;
             }
 
             Calculator calc = new Calculator();
-            result = calc.calculate(Integer.parseInt(argument1), Integer.parseInt(argument2), state.get("operator"));
+            result = calc.calculate(Integer.parseInt(argument1), Integer.parseInt(argument2), operator);
 
-            if (state.containsKey("isRoman")){
-                state.put("result", translator.toRoman(result));
+            if (isRoman){
+
+                total = translator.toRoman(result);
 
             }
             else
-                state.put("result", String.valueOf(result));
+                total = String.valueOf(result);
 
         }
         else throw new Error("Можно вводить либо только римские цифры от I до X, либо только арабские от 1 до 10");
 
         try {
-            System.out.println("Итого: " + state.get("result"));
+            System.out.println("Итого: " + total);
         }
         catch (Exception e) {
             System.out.println(e);

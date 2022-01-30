@@ -7,7 +7,9 @@ public class Validator {
 
         try {
             int i = Integer.parseInt(s.trim());
-            if (i < 1 || i > 10) return false;
+            if (i < 1 || i > 10) {
+                return false;
+            }
         }
         catch (NumberFormatException e){
             return false;
@@ -24,11 +26,15 @@ public class Validator {
     };
 
     public boolean isValidate (String firstArg, String secondArg){
-        if (isDecimals(firstArg) && isDecimals(secondArg)) return true;
+        if (isDecimals(firstArg) && isDecimals(secondArg)) {
+            return true;
+        }
         else if (isRomans(firstArg) && isRomans(secondArg)) {
             isRoman = true;
             return true;
         }
-        else return false;
+        else {
+            return false;
+        }
     }
 }

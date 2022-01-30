@@ -17,7 +17,6 @@ public class Parser {
     // парсим входящую строку на операнды и операцию
     void inputParser(String[] array, String str) {
 
-
         String[] args; // временный массив для парсинга операндов
 
         for (String s : array) {
