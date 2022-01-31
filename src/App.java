@@ -3,8 +3,6 @@ import calc.Parser;
 import calc.Translator;
 import calc.Validator;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class App {
@@ -28,17 +26,21 @@ public class App {
         str = str.replaceAll("\\s","");
         //закончили очищать
 
-        Parser sourceString = new Parser(str);
+        Parser parser = new Parser(str);
 
-        argument1 = sourceString.getFirstArg();
-        argument2 = sourceString.getSecondArg();
-        operator = sourceString.getOperator();
+        argument1 = parser.argument1;
+        argument2 = parser.argument2;
+        operator = parser.operator;
 
         Validator validator = new Validator();
 
-        Translator translator = new Translator();
-
         if (validator.isValidate(argument1, argument2 )){
+
+            // создаем транслятор для перевода одгого формата чисел в другой,
+            // который будет использоваться в следующих блоках кода не выезжая в
+            // общую область видимости
+            Translator translator = new Translator();
+
             // если прошла проверка аргументов, проверяем аргументы римские ли они
             if (validator.isRoman) {
                 // тут преобразование в десятичные

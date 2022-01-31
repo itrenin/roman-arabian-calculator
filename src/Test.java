@@ -1,12 +1,34 @@
-package calc;
+import java.util.Scanner;
 
-public class Parser {
+public class Test {
+
+    public static void main(String[] args){
+
+        Scanner in = new Scanner(System.in);
+        //String argument1;
+        //String argument2;
+        //String operator;
+
+        String str = in.nextLine();
+        TestParser tp = new TestParser(str);
+
+        System.out.println("first arg is: " + tp.argument1);
+        System.out.println("second arg is: " + tp.argument2);
+        System.out.println("operator is: " + tp.operator);
+
+        in.close();
+
+    }
+
+}
+
+class TestParser{
 
     public String argument1;
     public String argument2;
     public String operator = "NONE";
 
-    public Parser(String str) {
+    TestParser(String str) {
         int counter = 0;
         String[] args; // временный массив для парсинга операндов
 
@@ -33,4 +55,5 @@ public class Parser {
 
         }
     }
+
 }
