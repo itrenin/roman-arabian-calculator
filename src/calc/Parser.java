@@ -8,21 +8,21 @@ public class Parser {
 
     public Parser(String str) {
         int counter = 0;
-        // 02-02-2022 убрано за ненадобностью.
-        // String[] args; // временный массив для парсинга операндов
+        String tmpString = "";
 
         //перебираем массив из входящей строки на наличие операнда
         for (String s : str.split("")) {
+            tmpString = tmpString + s;
             if (s.equals("+") || s.equals("-") || s.equals("/") || s.equals("*")) {
                 this.operator = s;
                 counter++;
+                this.argument1 = tmpString.replace(s,"");
+                tmpString = "";
             }
         }
-        // если операция одна, то по ней разделяем операнды на первый и второй
+        // если операция одна, то получаем второй операнд
         if (counter == 1) {
-
-            this.argument1 = str.split("[+-/*]")[0];
-            this.argument2 = str.split("[+-/*]")[1];
+            this.argument2 = tmpString;
         }
         if (operator.equals("NONE")) {
             throw new Error("Оператор может быть только: +, -, *, /. Введите правильный оператор");
