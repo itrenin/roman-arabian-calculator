@@ -8,7 +8,8 @@ public class Parser {
 
     public Parser(String str) {
         int counter = 0;
-        String[] args; // временный массив для парсинга операндов
+        // 02-02-2022 убрано за ненадобностью.
+        // String[] args; // временный массив для парсинга операндов
 
         //перебираем массив из входящей строки на наличие операнда
         for (String s : str.split("")) {
@@ -20,9 +21,8 @@ public class Parser {
         // если операция одна, то по ней разделяем операнды на первый и второй
         if (counter == 1) {
 
-            args = str.split("[+-/*]");
-            this.argument1 = args[0];
-            this.argument2 = args[1];
+            this.argument1 = str.split("[+-/*]")[0];
+            this.argument2 = str.split("[+-/*]")[1];
         }
         if (operator.equals("NONE")) {
             throw new Error("Оператор может быть только: +, -, *, /. Введите правильный оператор");
